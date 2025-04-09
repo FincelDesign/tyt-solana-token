@@ -21,3 +21,7 @@ anchor --version
 
 # Install SPL Token CLI
 cargo install spl-token-cli
+
+# Restore Solana Wallet from GitHub Secrets
+mkdir -p ~/.config/solana
+echo "$SOLANA_DEVNET_WALLET" > ~/.config/solana/id.json
