@@ -18,3 +18,6 @@ cargo install --git https://github.com/coral-xyz/anchor avm --force
 avm install 0.30.0
 avm use 0.30.0
 anchor --version
+
+# Install SPL Token CLI
+cargo install spl-token-cli
