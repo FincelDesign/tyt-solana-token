@@ -1,0 +1,10 @@
+[programs.devnet]
+tyt_transfer_hook = "C3Hj4rA8FXPBVP8kfNKujEXJiFsHZgaFGhaEo6iVSWw8"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[workspace]
+members = ["programs/tyt_transfer_hook"]
+resolver = "2"

@@ -1,0 +1,18 @@
+[package]
+name = "tyt-transfer-hook"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "tyt_transfer_hook"
+path = "src/lib.rs"
+
+[features]
+no-entrypoint = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.30.0"
+solana-program = "~1.18.22"
+spl-transfer-hook-interface = "0.6.5"
