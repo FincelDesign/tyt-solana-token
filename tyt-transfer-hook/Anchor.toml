@@ -1,5 +1,15 @@
+[toolchain]
+anchor_version = "0.31.0"
+
+[features]
+resolution = true
+skip-lint = false
+
 [programs.devnet]
-tyt_transfer_hook = "C3Hj4rA8FXPBVP8kfNKujEXJiFsHZgaFGhaEo6iVSWw8"
+tyt_transfer_hook = "GeRJJx7idjqg2Z4sbtbupJG34AszA9gCLn4Jxd5G7ChM"
+
+[registry]
+url = "https://api.apr.dev"
 
 [provider]
 cluster = "devnet"
