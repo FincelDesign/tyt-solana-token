@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-tyt_transfer_hook = "GeRJJx7idjqg2Z4sbtbupJG34AszA9gCLn4Jxd5G7ChM"
+tyt_transfer_hook = "CKFNyhEGu7nXXqjNqXwLMAH94TgrAxrPQtuJuSSRdnip"
 
 [registry]
 url = "https://api.apr.dev"
@@ -17,4 +17,3 @@ wallet = "~/.config/solana/id.json"
 
 [workspace]
 members = ["programs/tyt_transfer_hook"]
-resolver = "2"
