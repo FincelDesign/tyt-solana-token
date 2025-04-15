@@ -1,29 +1,34 @@
 #!/bin/bash
 
-# Update dependencies
+# Update and install essential dependencies
 sudo apt update
 sudo apt upgrade -y
-sudo apt install -y curl build-essential pkg-config libssl-dev libudev-dev protobuf-compiler
+sudo apt install -y curl git build-essential pkg-config libssl-dev libudev-dev protobuf-compiler
 
-# Install Solana CLI
-sh -c "$(curl -sSfL https://release.anza.xyz/v1.18.22/install)"
+# Install latest stable Solana CLI (as recommended by official Solana docs)
+sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
 
-# Verify Solana installation
+# Verify Solana CLI installation
 solana --version
 
-# Install Rust 1.81.0 (latest stable compatible with Anchor CLI v0.31.0)
-rustup install 1.81.0
-rustup default 1.81.0
+# Install Rust latest stable version (officially recommended)
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+source $HOME/.cargo/env
+rustup update stable
+rustup default stable
 
-# Install AVM & Anchor CLI explicitly at latest stable v0.31.0
+# Verify Rust installation
+rustc --version
+
+# Install AVM & latest stable Anchor CLI
 cargo install --git https://github.com/coral-xyz/anchor avm --force --locked
-avm install 0.31.0
-avm use 0.31.0
+avm install latest
+avm use latest
 anchor --version
 
-# Install latest SPL Token CLI (fully Rust 1.81 compatible)
+# Install latest SPL Token CLI (compatible with latest stable Rust)
 cargo install spl-token-cli --locked --force
 spl-token --version
 
