@@ -16,8 +16,8 @@ rustc --version
 cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.0 anchor-cli --locked --force
 anchor --version
 
-# Install latest stable Solana CLI (as recommended by official Solana docs)
-sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
+# Install latest stable Solana CLI (official new Anza.xyz method)
+sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 # Explicitly set PATH for current and future shell sessions
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.profile
