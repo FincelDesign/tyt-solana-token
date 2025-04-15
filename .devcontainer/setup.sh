@@ -10,8 +10,6 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 source $HOME/.cargo/env
 rustup update stable
 rustup default stable
-
-# Verify Rust installation
 rustc --version
 
 # Install Anchor CLI explicitly from source at v0.31.0 (GLIBC compatible)
@@ -20,15 +18,18 @@ anchor --version
 
 # Install latest stable Solana CLI (as recommended by official Solana docs)
 sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+# Explicitly set PATH for current and future shell sessions
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
-
-# Verify Solana CLI installation
+echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.profile
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 solana --version
 
 # Install latest SPL Token CLI (compatible with latest stable Rust)
 cargo install spl-token-cli --locked --force
 spl-token --version
+
+# Explicitly install SPL Token 2022 CLI (enables Token-2022 features)
+cargo install spl-token-cli --features token-2022 --locked --force
 
 # Restore Solana Wallet from GitHub Secrets
 mkdir -p ~/.config/solana
