@@ -28,12 +28,10 @@ solana --version
 cargo install spl-token-cli --locked --force
 spl-token --version
 
-# Explicitly install SPL Token 2022 CLI (enables Token-2022 features)
-cargo install spl-token-cli --features token-2022 --locked --force
-
 # Restore Solana Wallet from GitHub Secrets
 mkdir -p ~/.config/solana
 echo "$SOLANA_DEVNET_WALLET" > ~/.config/solana/id.json
 
 # Configure Solana Devnet
 solana config set --url https://api.devnet.solana.com
+solana balance
