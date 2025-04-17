@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-tyt_transfer_hook = "CGj8XjuVzt1h4FMnRtFV3AFJy4RtjfXRZq8NEC2BT7L5"
+tyt_transfer_hook = "6zhCxVZxvcMSqomdWseFLo7zue2QdNes1H7LJNxU8Lrk"
 
 [registry]
 url = "https://api.apr.dev"
