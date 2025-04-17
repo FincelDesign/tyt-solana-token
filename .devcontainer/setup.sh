@@ -5,11 +5,11 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt install -y curl git build-essential pkg-config libssl-dev libudev-dev protobuf-compiler
 
-# Install Rust latest stable version (officially recommended)
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+# Install Rust 1.85.0
+curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.85.0
 source $HOME/.cargo/env
-rustup update stable
-rustup default stable
+rustup default 1.85.0
+rustup update 1.85.0
 rustc --version
 
 # Install Anchor CLI explicitly from source at v0.31.0 (GLIBC compatible)
