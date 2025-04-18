@@ -15,3 +15,6 @@ idl-build = ["anchor-lang/idl-build"]
 [dependencies]
 anchor-lang = "0.31.0"
 spl-transfer-hook-interface = "0.6.5"
+anchor-syn = "=0.31.0"
+proc-macro2 = "1.0.95"
+syn = "2.0.79"

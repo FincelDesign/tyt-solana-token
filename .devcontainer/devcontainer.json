@@ -1,19 +1,21 @@
 {
-  "name": "TYT Solana Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/rust:latest",
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {}
+  "name": "TYT Solana Development",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
   },
-  "postCreateCommand": "bash ./.devcontainer/setup.sh && yarn install && yarn upgrade @coral-xyz/anchor@0.31.0",
   "customizations": {
     "vscode": {
       "extensions": [
         "rust-lang.rust-analyzer",
-        "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "vadimcn.vscode-lldb",
+        "serayuzgur.crates",
+        "ms-vsliveshare.vsliveshare"
       ]
     }
   },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "remoteUser": "vscode",
   "containerEnv": {
     "SOLANA_DEVNET_WALLET": "${localEnv:SOLANA_DEVNET_WALLET}"
   }

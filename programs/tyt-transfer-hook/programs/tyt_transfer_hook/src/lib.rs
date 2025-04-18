@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::clock::Clock;
 
-declare_id!("6zhCxVZxvcMSqomdWseFLo7zue2QdNes1H7LJNxU8Lrk");
+declare_id!("BEFYxWjzadyjmYQvpuvaLjZnbeE2Q9daN3Z8FDC3jCBL");
 
 #[program]
 pub mod tyt_transfer_hook {
