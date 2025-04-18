@@ -37,10 +37,15 @@ RUN cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
 RUN avm install 0.31.0
 RUN avm use 0.31.0
 
-# Install Node.js and Yarn as vscode user
+# Install Node.js and Yarn as root
+USER root
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && sudo apt-get install -y nodejs \
+    && apt-get install -y nodejs \
     && npm install -g yarn
+
+# Switch back to vscode user for subsequent steps
+USER vscode
+WORKDIR /home/vscode
 
 # Install Solana SPL-Token CLI as vscode user
 RUN cargo install spl-token-cli
