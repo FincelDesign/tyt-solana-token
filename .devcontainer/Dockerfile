@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-# Install basic dependencies
+# Install basic dependencies as root
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -12,36 +12,38 @@ RUN apt-get update && apt-get install -y \
     cmake \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Rust 1.85.0
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.85.0
-ENV PATH="/root/.cargo/bin:${PATH}"
-RUN rustup component add rustfmt
+# Create the vscode user
+RUN groupadd --gid 1000 vscode \
+    && useradd --uid 1000 --gid 1000 -m vscode \
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo "vscode ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode
 
-# Install Solana CLI 2.1.20
-RUN sh -c "$(curl -sSfL https://release.anza.xyz/v2.1.20/install)"
+# Switch to vscode user
+USER vscode
+WORKDIR /home/vscode
 
-# Install Anchor CLI 0.31.0 using Anchor Version Manager (AVM)
+# Install Rust as vscode user
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/home/vscode/.cargo/bin:${PATH}"
+
+# Install Solana CLI as vscode user
+RUN sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+ENV PATH="/home/vscode/.local/share/solana/install/active_release/bin:${PATH}"
+
+# Install Anchor as vscode user
 RUN cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
 RUN avm install 0.31.0
 RUN avm use 0.31.0
 
-# Install Node.js and Yarn (for Anchor tests)
+# Install Node.js and Yarn as vscode user
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
+    && sudo apt-get install -y nodejs \
     && npm install -g yarn
 
-# Set up user
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update \
-    && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-USER $USERNAME
-ENV HOME=/home/$USERNAME
+# Install Solana SPL-Token CLI as vscode user
+RUN cargo install spl-token-cli
 
-# Add Solana and Rust to PATH for the user
-ENV PATH="/home/$USERNAME/.local/share/solana/install/active_release/bin:/home/$USERNAME/.cargo/bin:${PATH}"
+# Set working directory for the project
+WORKDIR /workspaces/tyt-solana-token
