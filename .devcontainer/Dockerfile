@@ -33,9 +33,7 @@ RUN sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
 ENV PATH="/home/vscode/.local/share/solana/install/active_release/bin:${PATH}"
 
 # Install Anchor as vscode user
-RUN cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
-RUN avm install 0.31.0
-RUN avm use 0.31.0
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.0 anchor-cli
 
 # Install Node.js and Yarn as root
 USER root
