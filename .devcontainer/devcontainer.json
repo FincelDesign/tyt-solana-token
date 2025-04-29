@@ -1,21 +1,25 @@
 {
-  "name": "TYT Solana Development",
-  "image": "mcr.microsoft.com/devcontainers/rust:1-bullseye",
+  "name": "TYT Solana Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "23.11.0"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "1.86.0"
+    }
   },
+  "postCreateCommand": "bash ./.devcontainer/setup.sh",
   "customizations": {
     "vscode": {
       "extensions": [
         "rust-lang.rust-analyzer",
-        "vadimcn.vscode-lldb",
-        "serayuzgur.crates",
-        "ms-vsliveshare.vsliveshare"
+        "coral-xyz.anchor",
+        "esbenp.prettier-vscode",
+        "serayuzgur.crates"
       ]
     }
   },
-  "postCreateCommand": "bash .devcontainer/setup.sh",
-  "remoteUser": "vscode",
   "containerEnv": {
     "SOLANA_DEVNET_WALLET": "${localEnv:SOLANA_DEVNET_WALLET}"
   }
