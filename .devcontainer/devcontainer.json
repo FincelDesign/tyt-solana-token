@@ -1,8 +1,8 @@
 {
   "name": "TYT Solana Development",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
+  "image": "mcr.microsoft.com/devcontainers/rust:1-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
   },
   "customizations": {
     "vscode": {
