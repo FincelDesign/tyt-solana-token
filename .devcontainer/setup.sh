@@ -1,29 +1,36 @@
 #!/bin/bash
 
-# Update and install additional dependencies
-sudo apt update
-sudo apt upgrade -y
-sudo apt install -y build-essential pkg-config libssl-dev libudev-dev protobuf-compiler clang cmake
+# Update essentials
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl git build-essential pkg-config libssl-dev libudev-dev protobuf-compiler
 
-# Ensure Rust 1.85.0 is installed explicitly
-rustup default 1.85.0
-rustup update 1.85.0
-rustc --version
+# Ensure rustup and cargo bin directories are accessible
+source "$HOME/.cargo/env"
 
-# Install Solana CLI using the official quick install script
-curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash
+# Install Solana CLI v2.2.12
+sh -c "$(curl -sSfL https://release.solana.com/v2.2.12/install)"
 
-# Set PATH for current and future shell sessions
+# Add Solana to PATH permanently
 echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
-echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.profile
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+
+# Verify Solana CLI installation
 solana --version
 
-# Install Anchor CLI explicitly at v0.31.0 (compatible with current GLIBC)
-cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.0 anchor-cli --locked --force
+# Install Anchor CLI v0.31.1
+cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.1 anchor-cli --locked --force
+
+# Verify Anchor CLI installation
 anchor --version
 
-# Install latest SPL Token CLI
+# Install Yarn v1.22.1 explicitly
+npm uninstall -g yarn
+npm install -g yarn@1.22.1
+
+# Verify Yarn installation
+yarn --version
+
+# Install SPL Token CLI latest stable version
 cargo install spl-token-cli --locked --force
 spl-token --version
 
@@ -34,3 +41,7 @@ echo "$SOLANA_DEVNET_WALLET" > ~/.config/solana/id.json
 # Configure Solana Devnet
 solana config set --url https://api.devnet.solana.com
 solana balance
+
+# Final check of installations
+echo "Installation completed. Checking versions..."
+rustc --version && cargo --version && solana --version && anchor --version && node --version && yarn --version
