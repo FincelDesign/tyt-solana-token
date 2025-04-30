@@ -22,5 +22,6 @@
   },
   "containerEnv": {
     "SOLANA_DEVNET_WALLET": "${localEnv:SOLANA_DEVNET_WALLET}"
-  }
+  },
+  "envFile": "../.env"
 }
