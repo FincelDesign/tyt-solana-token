@@ -1,47 +1,75 @@
 #!/bin/bash
 
-# Update essentials
+set -e  # Exit on error
+
+echo "🔧 Updating system packages..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl git build-essential pkg-config libssl-dev libudev-dev protobuf-compiler
 
-# Ensure rustup and cargo bin directories are accessible
-source "$HOME/.cargo/env"
+# Ensure Rust is initialized
+echo "🔧 Forcing Rust initialization..."
+rustup show > /dev/null || true
 
-# Install Solana CLI v2.2.12
-sh -c "$(curl -sSfL https://release.solana.com/v2.2.12/install)"
+# Source Rust environment if available
+if [ -f "$HOME/.cargo/env" ]; then
+  source "$HOME/.cargo/env"
+else
+  echo "⚠️  Rust env file not found. Skipping source."
+fi
 
-# Add Solana to PATH permanently
-echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
+# Install Solana CLI using new official URL
+echo "🔧 Installing latest stable Solana CLI (via Anza installer)..."
+sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+
+# Add Solana CLI to PATH for current and future sessions
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> ~/.bashrc
 
-# Verify Solana CLI installation
-solana --version
+# Confirm Solana CLI install
+if ! command -v solana &> /dev/null; then
+  echo "❌ Solana CLI not found after install."
+  exit 1
+else
+  echo "✅ Solana CLI installed: $(solana --version)"
+fi
 
-# Install Anchor CLI v0.31.1
+# Install Anchor CLI
+echo "🔧 Installing Anchor CLI v0.31.1..."
 cargo install --git https://github.com/coral-xyz/anchor --tag v0.31.1 anchor-cli --locked --force
+echo "✅ Anchor CLI installed: $(anchor --version)"
 
-# Verify Anchor CLI installation
-anchor --version
-
-# Install Yarn v1.22.1 explicitly
-npm uninstall -g yarn
+# Install Yarn
+echo "🔧 Installing Yarn v1.22.1..."
+npm uninstall -g yarn || true
 npm install -g yarn@1.22.1
+echo "✅ Yarn installed: $(yarn --version)"
 
-# Verify Yarn installation
+# Install SPL Token CLI
+echo "🔧 Installing SPL Token CLI..."
+cargo install spl-token-cli --locked --force
+echo "✅ SPL Token CLI installed: $(spl-token --version)"
+
+# Restore Solana wallet if provided
+echo "🔐 Restoring Solana wallet..."
+if [ -z "$SOLANA_DEVNET_WALLET" ]; then
+  echo "⚠️  SOLANA_DEVNET_WALLET is not set. Skipping wallet restore."
+else
+  mkdir -p ~/.config/solana
+  echo "$SOLANA_DEVNET_WALLET" > ~/.config/solana/id.json
+  echo "✅ Wallet restored to ~/.config/solana/id.json"
+fi
+
+# Configure Solana to use Devnet
+echo "🌐 Setting Solana config to Devnet..."
+solana config set --url https://api.devnet.solana.com
+
+# Confirm all key versions
+echo "📦 Installed Tool Versions:"
+rustc --version
+cargo --version
+solana --version
+anchor --version
+node --version
 yarn --version
 
-# Install SPL Token CLI latest stable version
-cargo install spl-token-cli --locked --force
-spl-token --version
-
-# Restore Solana Wallet from GitHub Secrets
-mkdir -p ~/.config/solana
-echo "$SOLANA_DEVNET_WALLET" > ~/.config/solana/id.json
-
-# Configure Solana Devnet
-solana config set --url https://api.devnet.solana.com
-solana balance
-
-# Final check of installations
-echo "Installation completed. Checking versions..."
-rustc --version && cargo --version && solana --version && anchor --version && node --version && yarn --version
+echo "✅ Environment setup complete."
